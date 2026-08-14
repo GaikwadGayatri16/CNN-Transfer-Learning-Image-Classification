@@ -158,3 +158,172 @@ This implementation performs:
 ```text
 REAL
 FAKE
+
+## 6. Data Preprocessing
+
+The following preprocessing steps are applied to the dataset:
+
+1. Images are resized to a fixed resolution.
+2. Pixel values are normalized to the range `[0, 1]`.
+3. The training dataset is divided into training and validation sets.
+4. Images are grouped into batches for efficient training.
+5. Prefetching is used to improve the input pipeline performance.
+
+The same dataset split and test set are used for the different models to
+ensure a fair comparison.
+
+---
+
+## 7. Model 1 — Custom CNN From Scratch
+
+The first model is a custom Convolutional Neural Network trained from
+scratch without using pretrained model weights.
+
+### CNN Architecture
+
+```text
+Input Image
+     ↓
+96 × 96 × 3
+     ↓
+Convolutional Layer
+     ↓
+Max Pooling
+     ↓
+Convolutional Layer
+     ↓
+Max Pooling
+     ↓
+Convolutional Layer
+     ↓
+Max Pooling
+     ↓
+Global Average Pooling
+     ↓
+Dense Layer
+     ↓
+Dropout
+     ↓
+Sigmoid Output
+     ↓
+REAL / FAKE
+
+## 8. Model 2 — MobileNetV2 Transfer Learning
+
+The second model uses **MobileNetV2 pretrained on ImageNet**.
+
+Transfer learning allows the model to reuse previously learned visual
+features and adapt them to the REAL/FAKE classification task.
+
+Initially, the pretrained MobileNetV2 layers are frozen and a new
+classification head is trained using the target dataset.
+
+### Architecture Flow
+
+```text
+Input Image
+     ↓
+Pretrained MobileNetV2
+     ↓
+Feature Extraction
+     ↓
+Global Average Pooling
+     ↓
+Dropout
+     ↓
+Dense Classification Layer
+     ↓
+Sigmoid
+     ↓
+REAL / FAKE
+
+
+
+## 9. MobileNetV2 Fine-Tuning
+
+After the initial transfer-learning stage, the upper layers of MobileNetV2
+were unfrozen and trained using a smaller learning rate.
+
+**Before Fine-Tuning:** 88.84%  
+**After Fine-Tuning:** 94.80%  
+**Improvement:** 5.96 percentage points
+
+Fine-tuning allowed the pretrained model to better adapt to the target
+REAL/FAKE dataset.
+
+---
+
+## 10. Evaluation and Results
+
+The models were evaluated using accuracy, precision, recall, F1-score,
+confusion matrices, training/validation curves, and error analysis.
+
+### Final Results
+
+| Model | Test Accuracy |
+|---|---:|
+| Custom CNN | **95.62%** |
+| MobileNetV2 | 88.84% |
+| Fine-Tuned MobileNetV2 | **94.80%** |
+
+The custom CNN achieved the highest accuracy. Fine-tuning improved
+MobileNetV2 by **5.96 percentage points**, bringing it within **0.82
+percentage points** of the CNN.
+
+---
+
+## 11. Error Analysis
+
+The final fine-tuned MobileNetV2 was evaluated on 20,000 test images.
+
+```text
+Correct Predictions   : 18,960
+Incorrect Predictions : 1,040
+Error Rate            : 5.20%
+
+## 12. Research Paper Comparison
+
+The selected research paper compares **MobileNetV2 and ResNet50** for
+AI-generated and real image classification using a more extensive
+experimental setup.
+
+| Aspect | Research Paper | Our Implementation |
+|---|---|---|
+| Models | MobileNetV2, ResNet50 | Custom CNN, MobileNetV2 |
+| Classification | REAL/FAKE + visual subclasses | REAL/FAKE |
+| Dataset | 23,941 images | CIFAKE |
+| Transfer Learning | Yes | Yes |
+| Fine-Tuning | Yes | Yes |
+| K-Fold Cross Validation | 5-fold | Not used |
+| Data Augmentation | Used | Not used |
+| Evaluation | Accuracy, Precision, Recall, F1, Confusion Matrix | Same |
+
+The original paper reported approximately **89%** best accuracy for
+MobileNetV2 and **93%** for ResNet50. Our best result was **95.62%** using
+the custom CNN, while fine-tuned MobileNetV2 achieved **94.80%**.
+
+This project therefore implements an adapted version of the research
+problem rather than reproducing every experiment from the paper.
+
+---
+
+## 13. Technologies Used
+
+- Python
+- TensorFlow / Keras
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-learn
+- Google Colab
+- GitHub
+
+---
+
+## 14. Repository
+
+```text
+CNN-Transfer-Learning-Image-Classification/
+│
+├── README.md
+└── Gayatri_Gaikwad_CNN_TransferLearning_Assignment.ipynb
