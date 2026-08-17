@@ -10,8 +10,11 @@ The implementation is based on the research paper:
 > **A Comparative Study of MobileNetV2 and ResNet50 for Multi-Class
 > AI-Generated and Real Image Classification**
 
-The project uses a custom CNN, MobileNetV2 transfer learning, and
-MobileNetV2 fine-tuning.
+The project compares three CNN architectures:
+
+- Custom CNN trained from scratch
+- MobileNetV2 using transfer learning and fine-tuning
+- ResNet50 using transfer learning and fine-tuning
 
 ## Dataset
 
@@ -21,30 +24,45 @@ MobileNetV2 fine-tuning.
 - Test images: 20,000
 - Classes: REAL, FAKE
 
+The dataset is balanced between the two classes.
+
 ## Models
 
 ### Custom CNN
 
-A CNN was designed and trained from scratch for REAL/FAKE classification.
+A Convolutional Neural Network was designed and trained from scratch for
+REAL/FAKE classification.
 
 ### MobileNetV2
 
-A pretrained MobileNetV2 model was used through transfer learning.
+A pretrained MobileNetV2 model was used through transfer learning. Its upper
+layers were then fine-tuned using a smaller learning rate.
 
-### Fine-Tuned MobileNetV2
+### ResNet50
 
-The upper layers of MobileNetV2 were fine-tuned to adapt the model to the
-target dataset.
+A pretrained ResNet50 model was used through transfer learning. Its upper
+layers were also fine-tuned using a smaller learning rate.
 
 ## Results
+
+### Final Model Comparison
 
 | Model | Test Accuracy |
 |---|---:|
 | Custom CNN | **95.62%** |
-| MobileNetV2 | 88.84% |
 | Fine-Tuned MobileNetV2 | **94.80%** |
+| Fine-Tuned ResNet50 | **89.81%** |
 
-Fine-tuning improved MobileNetV2 from **88.84% to 94.80%**.
+The custom CNN achieved the highest test accuracy of **95.62%**.
+
+### Effect of Fine-Tuning
+
+| Model | Before Fine-Tuning | After Fine-Tuning | Improvement |
+|---|---:|---:|---:|
+| MobileNetV2 | 88.84% | 94.80% | +5.96 pp |
+| ResNet50 | 76.64% | 89.81% | +13.17 pp |
+
+Fine-tuning significantly improved both pretrained models.
 
 ## Evaluation
 
@@ -58,26 +76,43 @@ The models were evaluated using:
 - Training/Validation Curves
 - Error Analysis
 
-The final fine-tuned MobileNetV2 achieved:
+For the fine-tuned MobileNetV2, the model correctly classified:
 
-- Correct predictions: **18,960 / 20,000**
-- Error rate: **5.20%**
+- **18,960 / 20,000 test images**
+- **Error rate: 5.20%**
 
-## Research Paper
+## Research Paper Comparison
 
-The original paper compares **MobileNetV2 and ResNet50** using a larger
-multi-class dataset and additional techniques such as data augmentation and
-5-fold cross-validation.
+The selected research paper compares **MobileNetV2 and ResNet50** for
+AI-generated and real image classification using a more extensive
+experimental setup.
+
+The paper uses techniques such as:
+
+- Transfer learning
+- Fine-tuning
+- Data augmentation
+- 5-fold cross-validation
+- Multiple evaluation metrics
 
 This project implements an **adapted version of the research problem** using
 the CIFAKE binary REAL/FAKE dataset.
 
+Unlike the paper, this implementation also includes a **custom CNN baseline**
+and focuses on binary REAL/FAKE classification.
+
 ## Technologies
 
-Python, TensorFlow, Keras, NumPy, Pandas, Matplotlib, Scikit-learn,
-Google Colab
+- Python
+- TensorFlow / Keras
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-learn
+- Google Colab
+- GitHub
 
-## Repository
+## Repository Structure
 
 ```text
 CNN-Transfer-Learning-Image-Classification/
